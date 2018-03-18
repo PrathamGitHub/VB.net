@@ -1,0 +1,55 @@
+Public Class Form2
+    Private Sub dgvSRs_KeyDown(sender As Object, e As KeyEventArgs) Handles dgvSRs.KeyDown
+        If Keys.Control And e.KeyCode = Keys.V Then
+            Dim textrows() As String = Clipboard.GetText.Split(vbNewLine)
+            'MessageBox.Show("Text ros.: " & textrows.Length - 1)
+
+            Dim r_ind As Integer = dgvSRs.SelectedCells(0).RowIndex
+            'MessageBox.Show("Selected row index: " & r_ind)
+
+            Dim c_ind As Integer = dgvSRs.SelectedCells(0).ColumnIndex
+            'MessageBox.Show("Selected column index: " & c_ind)
+
+            'MessageBox.Show("Availabel rows: " & dgvSRs.Rows.Count)
+
+            Dim addr As Integer = 0
+            If (r_ind + textrows.Length) > dgvSRs.Rows.Count Then addr = (r_ind + textrows.Length) - dgvSRs.Rows.Count
+
+            Dim i As Integer
+            If addr > 0 Then
+                For i = 0 To (addr - 1)
+                    dgvSRs.Rows.Add()
+                Next
+            End If
+
+            Dim j As Integer
+            Dim r, c As Integer
+            Dim col_arr() As String
+
+            'MessageBox.Show("Paste started")
+            r = r_ind
+            For i = 0 To textrows.Length - 1
+                'MessageBox.Show("Current row index: " & r)
+                'MessageBox.Show("row content: " & textrows(i))
+                If textrows(i) <> "" Then
+                    col_arr = textrows(i).Split(vbTab)
+                    c = c_ind
+                    For j = 0 To col_arr.Length - 1
+                        'MessageBox.Show("Current col index: " & c)
+                        'MessageBox.Show("Available col nos.: " & dgvSRs.ColumnCount)
+                        If c > dgvSRs.ColumnCount - 1 Then Exit For
+
+                        'MessageBox.Show("text content: " & col_arr(j))
+                        dgvSRs.Item(c, r).Value = col_arr(j).TrimStart
+
+
+                        c += 1
+                    Next
+                End If
+                r += 1
+            Next
+
+        End If
+    End Sub
+
+End Class
