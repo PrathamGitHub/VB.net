@@ -1,0 +1,37 @@
+Imports System.Threading
+
+Public Class Form1
+
+    Dim T As Thread
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim T As New Thread(New ThreadStart(Sub() UpdateForm()))
+        T.Start()
+    End Sub
+
+    Private Delegate Sub UpdateDelegate()
+    Sub UpdateForm()
+        If (InvokeRequired) Then
+            Invoke(New UpdateDelegate(Sub() UpdateForm()))
+        Else
+            Lbl01_status01.Text = "Check dir: 'C:/HAT'"
+            Me.Refresh()
+            Thread.Sleep(500)
+            If System.IO.Directory.Exists("C:/HAT") Then
+                Lbl01_status01.Text = "Dir: 'C:/HAT' exists, reading files"
+                Me.Refresh()
+                Thread.Sleep(500)
+            Else
+                Lbl01_status01.Text = "Create Dir: 'C:/HAT'"
+                Me.Refresh()
+                System.IO.Directory.CreateDirectory("C:/HAT")
+                Thread.Sleep(500)
+                Lbl01_status01.Text = "Created Dir: 'C:/HAT'"
+                Me.Refresh()
+            End If
+
+            Me.Hide()
+            Form2.Show()
+        End If
+    End Sub
+End Class
