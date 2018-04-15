@@ -1,0 +1,29 @@
+Public Class Form1
+
+    Dim drag As Boolean
+    Dim mousex As Integer
+    Dim mousey As Integer
+    
+    Private Sub Form1_LocationChanged(sender As Object, e As EventArgs) Handles Me.LocationChanged
+        Form2.Location = Me.PointToScreen(New Point(Button4.Location.X + Button4.Width - 8, Button4.Location.Y + Button4.Height - 1))
+    End Sub
+
+    Private Sub Panel1_MouseDown(sender As Object, e As MouseEventArgs) Handles Panel1.MouseDown
+        If e.Button = MouseButtons.Left Then
+            drag = True
+            mousex = Cursor.Position.X - Me.Left
+            mousey = Cursor.Position.Y - Me.Top
+        End If
+    End Sub
+
+    Private Sub Panel1_MouseMove(sender As Object, e As MouseEventArgs) Handles Panel1.MouseMove
+        If drag Then
+            Me.Top = Cursor.Position.Y - mousey
+            Me.Left = Cursor.Position.X - mousex
+        End If
+    End Sub
+
+    Private Sub Panel1_MouseUp(sender As Object, e As MouseEventArgs) Handles Panel1.MouseUp
+        drag = False
+    End Sub
+End Class
