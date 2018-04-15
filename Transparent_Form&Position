@@ -1,0 +1,16 @@
+Public Class Form1
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Form2.Show()
+        Me.Hide()
+        
+        Me.BackColor = Color.Gray
+        Me.TransparencyKey = Color.Gray
+        
+        Me.Location = Me.PointToScreen(New Point(Button5.Location.X + Button5.Width, Button5.Location.Y + Button5.Height))
+    End Sub
+
+    Private Sub Form1_LocationChanged(sender As Object, e As EventArgs) Handles Me.LocationChanged
+        Form2.Location = Me.PointToScreen(New Point(Button4.Location.X + Button4.Width - 8, Button4.Location.Y + Button4.Height - 1))
+    End Sub
+End Class
