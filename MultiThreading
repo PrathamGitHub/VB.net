@@ -1,0 +1,60 @@
+Imports System.Threading
+
+Public Class Form1
+    Public T1 As Thread = Nothing
+    Public T2 As Thread = Nothing
+
+    Dim drag As Boolean
+    Dim mousex As Integer
+    Dim mousey As Integer
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        T1 = New Thread(AddressOf Work1)
+        T1.Start()
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        T2 = New Thread(AddressOf Work2)
+        T2.Start()
+    End Sub
+
+    Sub Work1()
+        For i = 1 To 64
+            Update_form1_label(Label1, CStr(2 * Label1.Text))
+            'Refresh_form(Me)
+            Thread.Sleep(1000)
+        Next
+    End Sub
+
+    Sub Work2()
+        For i = 100 To 0 Step -1
+            Update_form1_label(Label1, i)
+            'Refresh_form(Me)
+            Thread.Sleep(500)
+        Next
+    End Sub
+
+    Sub Update_form1_label(ByVal lbl As Label, ByVal val As String)
+        If InvokeRequired Then
+            Invoke(New MethodInvoker(Sub() Update_form1_label(lbl, val)))
+        Else
+            lbl.Text = val
+        End If
+    End Sub
+
+    Sub Refresh_form(ByVal frm As Form)
+        If InvokeRequired Then
+            Invoke(New MethodInvoker(Sub() Refresh_form(frm)))
+        Else
+            frm.Refresh()
+        End If
+    End Sub
+    
+    Sub try()
+      T1.Suspend()
+      T1.Resume()
+      T1.Abort()
+     
+    End Sub
+    
+End Class
